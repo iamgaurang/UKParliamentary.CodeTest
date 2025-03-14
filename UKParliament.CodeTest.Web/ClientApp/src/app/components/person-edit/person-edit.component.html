@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <h3>{{ person ? 'Edit Person' : 'Add Person' }}</h3>
+  <form [formGroup]="personForm" (ngSubmit)="savePerson()">
+    <div class="mb-3">
+      <label for="firstName" class="form-label">First Name:</label>
+      <input
+        type="text"
+        id="firstName"
+        class="form-control"
+        formControlName="firstName"
+      />
+      <app-validation-messages [control]="firstName!"></app-validation-messages>
+    </div>
+
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last Name:</label>
+      <input
+        type="text"
+        id="lastName"
+        class="form-control"
+        formControlName="lastName"
+      />
+      <app-validation-messages [control]="lastName!"></app-validation-messages>
+    </div>
+
+    <div class="mb-3">
+      <label for="dateOfBirth" class="form-label">Date of Birth:</label>
+      <input
+        type="date"
+        id="dateOfBirth"
+        class="form-control"
+        formControlName="dateOfBirth"
+      />
+      <app-validation-messages [control]="dateOfBirth!"></app-validation-messages>
+    </div>
+
+    <div class="mb-3">
+      <label for="department" class="form-label">Department:</label>
+      <select id="department" class="form-select" formControlName="department">
+        <option value="" disabled>Select a department</option>
+        <option *ngFor="let dept of departmentsDataSource" [value]="dept.id">
+          {{ dept.name }}
+        </option>
+      </select>
+      <app-validation-messages [control]="department!"></app-validation-messages>
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="personForm.pristine || personForm.invalid">
+      Save
+    </button>
+  </form>
+</div>
