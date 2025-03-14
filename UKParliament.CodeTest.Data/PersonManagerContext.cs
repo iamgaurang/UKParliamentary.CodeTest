@@ -2,13 +2,8 @@
 
 namespace UKParliament.CodeTest.Data;
 
-public class PersonManagerContext : DbContext
+public class PersonManagerContext(DbContextOptions<PersonManagerContext> options) : DbContext(options)
 {
-    public PersonManagerContext(DbContextOptions<PersonManagerContext> options) : base(options)
-    {
-
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -18,6 +13,15 @@ public class PersonManagerContext : DbContext
             new Department { Id = 2, Name = "Marketing" },
             new Department { Id = 3, Name = "Finance" },
             new Department { Id = 4, Name = "HR" });
+        modelBuilder.Entity<Person>().HasData(
+            new Person
+            {
+                Id = 1, 
+                FirstName = "John", 
+                LastName = "Doe", 
+                DepartmentId = 1, 
+                DateOfBirth = new DateTime(1980, 01, 01),
+            });
     }
 
     public DbSet<Person> People { get; set; }

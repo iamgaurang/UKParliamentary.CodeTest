@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using UKParliament.CodeTest.Data;
 using UKParliament.CodeTest.Services;
+using UKParliament.CodeTest.Services.Repository;
+using UKParliament.CodeTest.Web.Controllers;
 
 namespace UKParliament.CodeTest.Web;
 
@@ -17,9 +20,15 @@ public class Program
         builder.Services.AddDbContext<PersonManagerContext>(op => op.UseInMemoryDatabase("PersonManager"));
 
         builder.Services.AddScoped<IPersonService, PersonService>();
+        builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+        builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+        builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
         var app = builder.Build();
 
+        // Register Global exception handler
+        app.UseMiddleware<GlobalExceptionHandler>();
+        
         // Create database so the data seeds
         using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
